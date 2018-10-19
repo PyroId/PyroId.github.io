@@ -1,0 +1,145 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PyroPython – Parameter estimation for FDS pyrolysis models written in python &#8212; pyropyhton  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart" href="quickstart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pyropython-parameter-estimation-for-fds-pyrolysis-models-written-in-python">
+<h1>PyroPython – Parameter estimation for FDS pyrolysis models written in python<a class="headerlink" href="#pyropython-parameter-estimation-for-fds-pyrolysis-models-written-in-python" title="Permalink to this headline">¶</a></h1>
+<p>Pyropython is a python library and set of command-line tools.  The motivation for creating this tool has
+been to support the Fire Modeling efforts at <a class="reference external" href="https://www.vtt.fi/">VTT Technical Research Centre of Finland</a>. These tools are
+best suited for identification of pyrolysis parameters for the Fire Dynamics Simulator (<a class="reference external" href="https://pages.nist.gov/fds-smv/">FDS</a>).</p>
+<p>Despite this background, the python library and commandline tools  can be used to identify
+parameters for any simulator that outputs data in csv format  with text headers.</p>
+<p>Pyropython is a wrapper around existing optimizatioon libraries and is written in
+a fashion that allows easy addition of new algorithms. Currently supported algorithms
+are:</p>
+<ol class="arabic simple">
+<li>Random sampling</li>
+<li>Nelder-Mead simplex (from <a class="reference external" href="https://www.scipy.org/">scipy</a>)</li>
+<li>Differential evolution (also from <cite>scipy</cite>)</li>
+<li>Bayesian Optimization (using <cite>scikit-optimize</cite>)</li>
+</ol>
+<p>The PyroPython tool is released as open source software and is available from  <a class="reference external" href="https://github.com/PyroId/PyroPython">https://github.com/PyroId/PyroPython</a>.
+The documentation can be found at <a class="reference external" href="http://pyroid.github.io/">http://pyroid.github.io/</a> .</p>
+<p>Development of PyroPyhton was financed by state nuclear waste fund in the <a class="reference external" href="http://safir2018.vtt.fi/">SAFIR2018</a>
+programme and <a class="reference external" href="http://www.nks.org/">NKS</a></p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#preliminaries">Preliminaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-file-structure">Configuration file structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-file-keywords">Configuration file keywords</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Template files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">pyropyhton</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Template files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="quickstart.html" title="next chapter">Quickstart</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Topi Sikanen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

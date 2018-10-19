@@ -1,0 +1,360 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration files &#8212; pyropyhton  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Usage" href="usage.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-files">
+<h1>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="preliminaries">
+<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
+<p>The configuration files used by the PyroPython command line tools are <a class="reference external" href="http://yaml.org/">yaml</a> files.
+They are plain text files that consists of key - value pairs. Below is an example
+of a valid <em>yaml</em> input (_not_ a valid PyroPython input!)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
+<span class="l l-Scalar l-Scalar-Plain">person</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">age</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">NA</span>
+</pre></div>
+</div>
+<p>In the above example, the keyword “age” is tied to a single value (100) while the
+keyword person is tied to a <em>dictionary</em>.  The dicitonary of a person can also
+be written</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">person</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">age</span><span class="p p-Indicator">:</span> <span class="nv">100</span><span class="p p-Indicator">,</span> <span class="nv">name</span><span class="p p-Indicator">:</span> <span class="nv">NA</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>This should look familiar to everyone familiar with the Python programming language.</p>
+</div>
+<div class="section" id="configuration-file-structure">
+<h2>Configuration file structure<a class="headerlink" href="#configuration-file-structure" title="Permalink to this headline">¶</a></h2>
+<p>PyroPython configuration file consists of a number of keywords some of which are
+optional. A minimal configuration file looks like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">num_jobs</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># number of parallel jobs</span>
+<span class="l l-Scalar l-Scalar-Plain">max_iter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span> <span class="c1"># maximum number of iterations</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>  <span class="c1"># How many points explored per iteration</span>
+<span class="l l-Scalar l-Scalar-Plain">num_initial</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span> <span class="c1"># Number of points in initial design (here 100*ndim)</span>
+<span class="l l-Scalar l-Scalar-Plain">fds_command</span><span class="p p-Indicator">:</span>
+<span class="l l-Scalar l-Scalar-Plain">variables</span><span class="p p-Indicator">:</span> <span class="c1"># VAR_NAME: [LOWER,UPPER]</span>
+    <span class="l l-Scalar l-Scalar-Plain">var1</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span> <span class="nv">1</span><span class="p p-Indicator">]</span>
+    <span class="l l-Scalar l-Scalar-Plain">var2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span> <span class="nv">2</span><span class="p p-Indicator">]</span>
+<span class="l l-Scalar l-Scalar-Plain">simulation</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">MASS2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;birch_tga_gronli_2_tga.csv&#39;</span><span class="p p-Indicator">,</span><span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Mass&#39;</span><span class="p p-Indicator">,</span><span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Temp&#39;</span><span class="p p-Indicator">}</span>
+    <span class="l l-Scalar l-Scalar-Plain">GMASS2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;birch_tga_gronli_2_tga.csv&#39;</span><span class="p p-Indicator">,</span><span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;MLR&#39;</span><span class="p p-Indicator">,</span><span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Temp&#39;</span><span class="p p-Indicator">}</span>
+<span class="l l-Scalar l-Scalar-Plain">experiment</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">MASS2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;birch_tga_2_exp.csv&#39;</span><span class="p p-Indicator">,</span><span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Mass&#39;</span><span class="p p-Indicator">,</span><span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Temp&#39;</span><span class="p p-Indicator">,</span><span class="nv">normalize</span><span class="p p-Indicator">:</span> <span class="nv">True</span><span class="p p-Indicator">}</span>
+    <span class="l l-Scalar l-Scalar-Plain">GMASS2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;birch_tga_2_exp.csv&#39;</span><span class="p p-Indicator">,</span><span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Mass&#39;</span><span class="p p-Indicator">,</span><span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;Temp&#39;</span><span class="p p-Indicator">,</span><span class="nv">conversion_factor</span><span class="p p-Indicator">:</span> <span class="nv">0.0333</span><span class="p p-Indicator">,</span><span class="nv">normalize</span><span class="p p-Indicator">:</span> <span class="nv">True</span><span class="p p-Indicator">,</span><span class="nv">gradient</span><span class="p p-Indicator">:</span> <span class="nv">True</span><span class="p p-Indicator">}</span>
+<span class="l l-Scalar l-Scalar-Plain">templates</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;birch_tga_gronli_2.fds&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>This configuration file instructs PyroPython to match the variables MASS2 and GMASS2
+by changing the variables var1 and var2. The optimization is done using a single process
+and optimization continues for 10 iterations.</p>
+</div>
+<div class="section" id="configuration-file-keywords">
+<h2>Configuration file keywords<a class="headerlink" href="#configuration-file-keywords" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="num_jobs">
+<code class="descname">num_jobs</code><a class="headerlink" href="#num_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of parallel jobs used. (default: 1)</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="max_iter">
+<code class="descname">max_iter</code><a class="headerlink" href="#max_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of iterations. Meaning of this parameter depends on the
+algorithm used</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="num_points">
+<code class="descname">num_points</code><a class="headerlink" href="#num_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of points explored per iteration.  BEhaviour depends on the
+optimization algortihm. Default (num_point = num_jobs)</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="num_initial">
+<code class="descname">num_initial</code><a class="headerlink" href="#num_initial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of points chosen randomly in the beginning. Also known as initial design.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="initial_design">
+<code class="descname">initial_design</code><span class="sig-paren">(</span><em>optional</em>, <em>default: lhs</em><span class="sig-paren">)</span><a class="headerlink" href="#initial_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type of initial design. Choices are “rand” and “lhs” for uniform random and
+latin hypercube sampling</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="initial_design_file">
+<code class="descname">initial_design_file</code><span class="sig-paren">(</span><em>optional</em><span class="sig-paren">)</span><a class="headerlink" href="#initial_design_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>A comma separated text file containing a initial design. The file should
+contain one header line and a column for each variable being optimized and
+optionally objective value.  Overrides  <em>initial_design</em> and  <em>num_initial</em>
+options.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="casename">
+<code class="descname">casename</code><span class="sig-paren">(</span><em>optional</em><span class="sig-paren">)</span><a class="headerlink" href="#casename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Casename used for naming log file and output directories. By default
+Pyropython creates the following files and directories:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Work</span><span class="o">/</span>
+<span class="n">Best</span><span class="o">/</span>
+<span class="n">Figs</span><span class="o">/</span>
+<span class="n">log</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>If the casename is set to ‘CASE’,  the followin g files and directories
+will be created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Work</span><span class="o">/</span>
+<span class="n">CASE_Best</span><span class="o">/</span>
+<span class="n">CASE_Figs</span><span class="o">/</span>
+<span class="n">CASE</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>This is useful if you want to several cases in the same folder.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="fds_command">
+<code class="descname">fds_command</code><a class="headerlink" href="#fds_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to the executable, including the executable. For example, if you
+installed FDS from the official distribution on Windows, this line would most
+likely read:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">fds_command</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">C:\Program Files\firemodels\FDS6\bin\fds.exe</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="variables">
+<code class="descname">variables</code><a class="headerlink" href="#variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of variables and corresponding bounds in format:</p>
+<p>For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">variables</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">var1</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">]</span>
+    <span class="l l-Scalar l-Scalar-Plain">var2</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">-1</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The above block defines two variables named “var1” and “var2”. Variable “var1”
+has lower bound 0 and upper bound 1.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="simulation">
+<code class="descname">simulation</code><a class="headerlink" href="#simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of variables to be read from the simulation output. Each variable is
+given in format:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">varname</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">header</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">normalize</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">gradient</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">filter</span><span class="p p-Indicator">:}</span>
+</pre></div>
+</div>
+<dl class="data">
+<dt id="varname">
+<code class="descname">varname</code><a class="headerlink" href="#varname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variable name. Used to mach variables from “simulation” with variables
+from “experiment”</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="fname">
+<code class="descname">fname</code><a class="headerlink" href="#fname" title="Permalink to this definition">¶</a></dt>
+<dd><p>A csv filename, where the simulator output can be read.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="dep_col_name">
+<code class="descname">dep_col_name</code><a class="headerlink" href="#dep_col_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the column containing the <em>dependent</em> variable data.</p>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<code class="descname">dep_col_name</code></dt>
+<dd><p>Name of the column containing the <em>independent</em> variable data.</p>
+</dd></dl>
+
+<p>The following keywords are <em>optional</em></p>
+<dl class="data">
+<dt id="header">
+<code class="descname">header</code><span class="sig-paren">(</span><em>optional</em>, <em>default = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of header lines to skip. Default value is 1 and implies that
+the variable names are given on the <em>second</em> row of the .csv file.
+The default value is chosen with FDS output files in mind, where
+the first row contains unit info.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="normalize">
+<code class="descname">normalize</code><span class="sig-paren">(</span><em>optional</em>, <em>default = False</em><span class="sig-paren">)</span><a class="headerlink" href="#normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should TGA normalization be applied to data? Default: False. If set
+to True, the data is normalized as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">/</span> <span class="n">y</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<code class="descname">normalize</code><span class="sig-paren">(</span><em>optional</em>, <em>default = False</em><span class="sig-paren">)</span></dt>
+<dd><p>Should gradient be calculated from the data? If set to True, gradient
+is calculated using numpy.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="filter">
+<code class="descname">filter</code><span class="sig-paren">(</span><em>optional</em>, <em>default = None</em><span class="sig-paren">)</span><a class="headerlink" href="#filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter to be appleid to the data. Choices are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>“gp”, for Gaussian process. This fits a GaussianProcessRegressor</dt>
+<dd>from scikit-learn to the data and uses the predicted mean of the
+fitted process as the smoothed data</dd>
+</dl>
+</li>
+<li>“ma”, for moving average.</li>
+<li>“median”, for median filter.</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="experiment">
+<code class="descname">experiment</code><a class="headerlink" href="#experiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of variables that form the experimental data. Each entry in
+<em>simulation</em> should have a corresponding entry in <em>experiment</em>.
+The format is  exactly the same as in <em>simulation</em>, with one exception:
+The default value of <em>header</em> keyword is 0, implying that the variable
+names should be given in the first row of the .csv - file.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="obejctive">
+<code class="descname">obejctive</code><span class="sig-paren">(</span><em>optional</em>, <em>Default: mse</em><span class="sig-paren">)</span><a class="headerlink" href="#obejctive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type of objective function</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="plots">
+<code class="descname">plots</code><span class="sig-paren">(</span><em>optional</em><span class="sig-paren">)</span><a class="headerlink" href="#plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of plots to be drawn</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="optimizer_name">
+<code class="descname">optimizer_name</code><a class="headerlink" href="#optimizer_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the optimizer</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="optimizer">
+<code class="descname">optimizer</code><span class="sig-paren">(</span><em>optional</em><span class="sig-paren">)</span><a class="headerlink" href="#optimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizer options. Curretly only supported for scikit-optimize. This is
+a  dictionary of options passed to the <a class="reference external" href="https://scikit-optimize.github.io/optimizer/index.html">skopt.optimizer</a> module.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pyropyhton</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preliminaries">Preliminaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-structure">Configuration file structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-keywords">Configuration file keywords</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="usage.html" title="previous chapter">Usage</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Topi Sikanen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/configuration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

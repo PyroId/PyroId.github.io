@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Template files &#8212; pyropyhton  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Configuration files" href="configuration.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="template-files">
+<h1>Template files<a class="headerlink" href="#template-files" title="Permalink to this headline">¶</a></h1>
+<p>In additon to the configuration file, template file(s) are also needed.
+These should be valid <a class="reference external" href="http://jinja.pocoo.org/docs/2.10/">Jinja2</a>  templates that produce FDS files.</p>
+<p>The Variables that are to be optimized shall be replaced with {{variable name}}
+(i.e. the variable name surrounded by double curly brackets). For example, it the
+variables are defined in the yaml file as:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">variables</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">VAR1</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span> <span class="nv">0.1</span><span class="p p-Indicator">,</span> <span class="nv">0.5</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The variable is entered into the template in the following manner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">MATL</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;ACME STUFF&quot;</span>
+      <span class="n">DENSITY</span><span class="o">=</span><span class="mi">100</span>
+      <span class="n">CONDUCTIVITY</span> <span class="o">=</span> <span class="p">{{</span><span class="n">VAR1</span><span class="p">}}</span>
+      <span class="n">SPECIFIC_HEAT</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>The input file is actually a Jinja2 template ([<a class="reference external" href="http://jinja.pocoo.org/">http://jinja.pocoo.org/</a>]).
+This allows one to create various constructs such as create ramps from parametrized
+curves as follows</p>
+<blockquote>
+<div>config.yml:</div></blockquote>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">variables</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">a</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span> <span class="nv">0.1</span><span class="p p-Indicator">,</span> <span class="nv">0.5</span><span class="p p-Indicator">]</span>
+          <span class="l l-Scalar l-Scalar-Plain">b</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span> <span class="nv">0.1</span><span class="p p-Indicator">,</span> <span class="nv">0.5</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>template.fds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">600</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span> <span class="o">%</span><span class="p">}</span>
+  <span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="p">{{</span><span class="n">number</span><span class="p">}}</span> <span class="n">F</span><span class="o">=</span><span class="p">{{</span><span class="n">a</span><span class="o">*</span><span class="n">number</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">b</span><span class="p">}}</span><span class="o">/</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The for loop above  generates a RAMP from 0 to 600 with step size 100 using
+ramp values calculated from second degree polynomial with parameters a and b.
+For example, with parameters a=0.01 and b=2 the ramp resulting file will contain:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">0</span> <span class="n">F</span><span class="o">=</span><span class="mf">2.0</span><span class="o">/</span>
+<span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span> <span class="n">F</span><span class="o">=</span><span class="mf">102.0</span><span class="o">/</span>
+<span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span> <span class="n">F</span><span class="o">=</span><span class="mf">402.0</span><span class="o">/</span>
+<span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">300</span> <span class="n">F</span><span class="o">=</span><span class="mf">902.0</span><span class="o">/</span>
+<span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">400</span> <span class="n">F</span><span class="o">=</span><span class="mf">1602.0</span><span class="o">/</span>
+<span class="o">&amp;</span><span class="n">RAMP</span> <span class="n">ID</span><span class="o">=</span><span class="s2">&quot;CP&quot;</span> <span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span> <span class="n">F</span><span class="o">=</span><span class="mf">2502.0</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The jinja2 templates can also contain logic blocks etc. Read more form <a class="reference external" href="http://jinja.pocoo.org/docs/2.10/">Jinja2</a>
+documentation. And see the <a class="reference external" href="https://github.com/PyroId/PyroPython/tree/master/examples">examples</a> directory for examples.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pyropyhton</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Template files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="configuration.html" title="previous chapter">Configuration files</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Topi Sikanen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/templates.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
