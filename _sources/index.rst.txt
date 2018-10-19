@@ -49,6 +49,8 @@ programme and `NKS`_
     usage
     configuration
     templates
+    plots
+    filters
     examples
 
 
