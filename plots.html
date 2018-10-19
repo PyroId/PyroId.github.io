@@ -33,6 +33,22 @@
             
   <div class="section" id="plotting-with-plot-pyro">
 <h1>Plotting with plot_pyro<a class="headerlink" href="#plotting-with-plot-pyro" title="Permalink to this headline">¶</a></h1>
+<p>Pyropython contains a rudimentary plotting tool to quickly inspect the
+experimental data, simulation results and goodness of fit. If you installed
+the package using <strong>pip</strong>, you can get the plots by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_pyro</span> <span class="n">config</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>The plots are defined in the <strong>config.yml</strong> file under the <strong>plots</strong> keyword.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">plots</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">plotname</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">variables</span><span class="p p-Indicator">:</span>
+               <span class="nv">labels</span><span class="p p-Indicator">:</span>
+               <span class="nv">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;experimental&quot;</span>
+              <span class="nv">ylabel</span><span class="p p-Indicator">:</span>
+              <span class="nv">xlabel</span><span class="p p-Indicator">:</span>
+              <span class="p p-Indicator">}</span>
+</pre></div>
+</div>
 </div>
 
 

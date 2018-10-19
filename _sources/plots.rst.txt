@@ -1,3 +1,23 @@
 =======================
 Plotting with plot_pyro
 =======================
+Pyropython contains a rudimentary plotting tool to quickly inspect the
+experimental data, simulation results and goodness of fit. If you installed
+the package using **pip**, you can get the plots by typing
+
+::
+
+    plot_pyro config.yml
+
+The plots are defined in the **config.yml** file under the **plots** keyword.
+
+
+.. code-block:: yaml
+
+    plots:
+        plotname: {variables:
+                   labels:
+                   type: "experimental"
+                  ylabel:
+                  xlabel:
+                  }
