@@ -176,33 +176,33 @@ given in format:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">varname</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">{</span><span class="nv">fname</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">dep_col_name</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">ind_col_name</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">header</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">normalize</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">gradient</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">,</span> <span class="nv">filter</span><span class="p p-Indicator">:}</span>
 </pre></div>
 </div>
-<dl class="data">
+<dl class="attribute">
 <dt id="varname">
 <code class="descname">varname</code><a class="headerlink" href="#varname" title="Permalink to this definition">¶</a></dt>
 <dd><p>Variable name. Used to mach variables from “simulation” with variables
 from “experiment”</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="attribute">
 <dt id="fname">
 <code class="descname">fname</code><a class="headerlink" href="#fname" title="Permalink to this definition">¶</a></dt>
 <dd><p>A csv filename, where the simulator output can be read.</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="attribute">
 <dt id="dep_col_name">
 <code class="descname">dep_col_name</code><a class="headerlink" href="#dep_col_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the column containing the <em>dependent</em> variable data.</p>
 </dd></dl>
 
-<dl class="data">
-<dt>
-<code class="descname">dep_col_name</code></dt>
+<dl class="attribute">
+<dt id="ind_col_name">
+<code class="descname">ind_col_name</code><a class="headerlink" href="#ind_col_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the column containing the <em>independent</em> variable data.</p>
 </dd></dl>
 
 <p>The following keywords are <em>optional</em></p>
-<dl class="data">
+<dl class="attribute">
 <dt id="header">
 <code class="descname">header</code><span class="sig-paren">(</span><em>optional</em>, <em>default = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of header lines to skip. Default value is 1 and implies that
@@ -211,7 +211,7 @@ The default value is chosen with FDS output files in mind, where
 the first row contains unit info.</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="attribute">
 <dt id="normalize">
 <code class="descname">normalize</code><span class="sig-paren">(</span><em>optional</em>, <em>default = False</em><span class="sig-paren">)</span><a class="headerlink" href="#normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Should TGA normalization be applied to data? Default: False. If set
@@ -221,14 +221,14 @@ to True, the data is normalized as</p>
 </div>
 </dd></dl>
 
-<dl class="data">
+<dl class="attribute">
 <dt>
 <code class="descname">normalize</code><span class="sig-paren">(</span><em>optional</em>, <em>default = False</em><span class="sig-paren">)</span></dt>
 <dd><p>Should gradient be calculated from the data? If set to True, gradient
 is calculated using numpy.</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="attribute">
 <dt id="filter">
 <code class="descname">filter</code><span class="sig-paren">(</span><em>optional</em>, <em>default = None</em><span class="sig-paren">)</span><a class="headerlink" href="#filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter to be appleid to the data. Choices are:</p>
@@ -259,21 +259,22 @@ names should be given in the first row of the .csv - file.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="obejctive">
-<code class="descname">obejctive</code><span class="sig-paren">(</span><em>optional</em>, <em>Default: mse</em><span class="sig-paren">)</span><a class="headerlink" href="#obejctive" title="Permalink to this definition">¶</a></dt>
+<dt id="objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>optional</em>, <em>Default: mse</em><span class="sig-paren">)</span><a class="headerlink" href="#objective" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type of objective function</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="plots">
 <code class="descname">plots</code><span class="sig-paren">(</span><em>optional</em><span class="sig-paren">)</span><a class="headerlink" href="#plots" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of plots to be drawn</p>
+<dd><p>List of plots to be drawn. See the section <a class="reference internal" href="plots.html#plotting"><span class="std std-ref">Plotting</span></a> for more information.
+:noindex:</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="optimizer_name">
-<code class="descname">optimizer_name</code><a class="headerlink" href="#optimizer_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the optimizer</p>
+<code class="descname">optimizer_name</code><span class="sig-paren">(</span><em>default: 'skopt'</em><span class="sig-paren">)</span><a class="headerlink" href="#optimizer_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the optimizer. See <a class="reference internal" href="optimizers.html#optimizers"><span class="std std-ref">Optimizers</span></a> for more information.</p>
 </dd></dl>
 
 <dl class="data">
@@ -304,7 +305,6 @@ a  dictionary of options passed to the <a class="reference external" href="https
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration files</a><ul>
@@ -314,6 +314,9 @@ a  dictionary of options passed to the <a class="reference external" href="https
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Template files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 

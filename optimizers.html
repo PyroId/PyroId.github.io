@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Optimizers &#8212; pyropython  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plotting" href="plots.html" />
+    <link rel="prev" title="Template files" href="templates.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="optimizers">
+<span id="id1"></span><h1>Optimizers<a class="headerlink" href="#optimizers" title="Permalink to this headline">¶</a></h1>
+<p>Pyropython supports a number of methods for solving the optimization problem. The
+optimizer is defined in the config.yml file  with the <em>optimizer_name</em> keyword.
+Parameters affecting the optimization algorithms are:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maxiter</span><span class="p p-Indicator">:</span> <span class="c1"># maximum number of iterations.</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="c1"># number of points per iteration</span>
+<span class="l l-Scalar l-Scalar-Plain">num_initial</span><span class="p p-Indicator">:</span> <span class="c1"># number of points in the initial design</span>
+<span class="l l-Scalar l-Scalar-Plain">initial_design</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">rand | lhs</span> <span class="c1"># type of initial design</span>
+<span class="l l-Scalar l-Scalar-Plain">intiial_design_file</span><span class="p p-Indicator">:</span> <span class="c1"># file containing initial design.</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dummy | multistart | de | skopt</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer</span><span class="p p-Indicator">:</span> <span class="c1"># options passed to skopt.optimizer</span>
+</pre></div>
+</div>
+<p>The first three keywords have slightly different effects depending on the optimizer
+chosen.</p>
+<p>The supported optimizers are.</p>
+<ol class="arabic simple">
+<li><strong>dummy</strong>  - Random sampling</li>
+<li><strong>multistart</strong> - Multiple starts using Nelder-Mead simplex (from <a href="#id2"><span class="problematic" id="id3">`scipy`_</span></a>)</li>
+<li><strong>de</strong> - Differential evolution (also from <cite>scipy</cite>)</li>
+<li><strong>skopt</strong> (default) Bayesian Optimization (using <cite>scikit-optimize</cite>)</li>
+</ol>
+<div class="section" id="initial-design">
+<h2>Initial design<a class="headerlink" href="#initial-design" title="Permalink to this headline">¶</a></h2>
+<p>Initial design is needed for all optimization algorithms except differential
+evolution. Differential evolution uses a LHS initial design, but this is handled
+internally by the optimizer.</p>
+<p>There are three choices for initial design.</p>
+<ol class="arabic simple">
+<li><strong>lhs</strong> - Random design using initial hypercubes.</li>
+<li><strong>rand</strong> - Random design using uniform random sample.</li>
+<li><strong>initial_design file</strong> - Read the initial design from a .csv file.</li>
+</ol>
+<p>Latin hypercube sampling is the default, but currently requires the pyDOE package.
+The initial design file is mainly useful for continuing optimization from previous
+results or “polishing” the results of a global algorithm with local algorithm.
+More on “polishing” later.</p>
+</div>
+<div class="section" id="random-sampling">
+<h2>Random sampling<a class="headerlink" href="#random-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Random sampling is what the name suggests: random sampling. Consider the following
+settings in the configuration file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maxiter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="l l-Scalar l-Scalar-Plain">num_initial</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
+<span class="l l-Scalar l-Scalar-Plain">initial_design</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">lhs</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dummy</span>
+</pre></div>
+</div>
+<p>First, the model is evaluated at 150 points selected with latin hypercube sampling. After
+this the algorithm conitnues for 10 iterations, evaluating the mdoel at 10 points each iteration.
+The points in the subsequent iterations are selected by uniform random sampling. Not latin hypercubes.</p>
+</div>
+<div class="section" id="multistart">
+<h2>Multistart<a class="headerlink" href="#multistart" title="Permalink to this headline">¶</a></h2>
+<p>Multistart optimizes the model using a deterministic local optimizer, using multiple starting points.
+The starting points are selected in the following fashion:</p>
+<ol class="arabic simple">
+<li>First, model is evaluated at <em>num_initial</em> points (or the initial design is loaded from file)</li>
+<li>Points are ordered in ascending order by their objective value.</li>
+<li>In each iteration,  numbe rof points indicated by the <em>num_points</em> variable are evaluated in the
+order of their fitness.</li>
+</ol>
+<p>Consider the following input:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maxiter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="l l-Scalar l-Scalar-Plain">num_initial</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
+<span class="l l-Scalar l-Scalar-Plain">initial_design</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">lhs</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">multistart</span>
+</pre></div>
+</div>
+<p>The <em>intial_design_file</em> option can be used to “polish” results from another optimizer:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maxiter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="l l-Scalar l-Scalar-Plain">initial_design_file</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">results_from_earlier_optimization.csv</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">multistart</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="differential-evolution">
+<h2>Differential Evolution<a class="headerlink" href="#differential-evolution" title="Permalink to this headline">¶</a></h2>
+<p>Differential evolution makes use of the <a class="reference internal" href="#differential-evolution">differential evolution</a> solver in <a href="#id4"><span class="problematic" id="id5">`scipy`_</span></a>.  The <strong>maxiter</strong> is
+the only parameter that has an effect on the differential evolution solver.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">maxiter</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span> <span class="c1"># MAximum number of generations</span>
+<span class="l l-Scalar l-Scalar-Plain">num_points</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span> <span class="c1"># Ignored</span>
+<span class="l l-Scalar l-Scalar-Plain">num_initial</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span> <span class="c1"># Ignored</span>
+<span class="l l-Scalar l-Scalar-Plain">optimizer_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">de</span>
+</pre></div>
+</div>
+<p>This instructs pyropython to use differential evolution algorithm</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pyropython</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Template files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optimizers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#initial-design">Initial design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-sampling">Random sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multistart">Multistart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#differential-evolution">Differential Evolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="templates.html" title="previous chapter">Template files</a></li>
+      <li>Next: <a href="plots.html" title="next chapter">Plotting</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Topi Sikanen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/optimizers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

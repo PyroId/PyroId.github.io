@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Filtering experimental data &#8212; pyropython  documentation</title>
+    <title>Filters &#8212; pyropython  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples" href="examples.html" />
-    <link rel="prev" title="Plotting with plot_pyro" href="plots.html" />
+    <link rel="prev" title="Plotting" href="plots.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -31,8 +31,47 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="filtering-experimental-data">
-<h1>Filtering experimental data<a class="headerlink" href="#filtering-experimental-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="filters">
+<h1>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h1>
+<p>Pyropython contains a few simple routines for filtering data. Most users will still probably want to
+do any needed filtering pof data manually. By default, no filters are used.</p>
+<p>The filters are invoked by the <strong>filter</strong> keyword in the variable definitions under  <strong>simulation</strong> and <strong>experiment</strong>
+keywords in the configuration file.  Available filters are:</p>
+<ol class="arabic simple">
+<li><strong>ma</strong> - moving average</li>
+<li><strong>median</strong> - median filter</li>
+<li><strong>gp</strong> - gaussian process</li>
+</ol>
+<p>Both the moving average and median filters accept an optional <strong>width</strong> parameter. The parameter can be given on the
+data line with the <strong>filter_opts</strong> keyword as follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">MLR35</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;Experimental_Data/Birch_35kW.csv&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;MLR&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="l l-Scalar l-Scalar-Plain">filter_type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">median</span>
+        <span class="l l-Scalar l-Scalar-Plain">filter_opts</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">width</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">31</span>
+</pre></div>
+</div>
+<p>The default width for median and moving average filters is 10 samples. Note that boths median and moving average filters
+assume uniform sampling of the input.</p>
+<p>The Gaussian process filter works by fitting a <a class="reference external" href="http://scikit-learn.org/stable/modules/gaussian_process.html">Gaussian process</a> model to the data and then using the expected value
+of the gaussian priocess as the filtered value (Gaussian process regression).  Fitting a model can take up even several minutes
+for datasets with thousands of samples. However, the Gaussian process “filter” automatically determines its parameters and
+does not assume uniform sampling.</p>
+<p>The effect of the filter can be investigated using the <em>plot_pyro</em> tool. See the section <a class="reference internal" href="plots.html#plotting"><span class="std std-ref">Plotting</span></a>
+for more information. For example, the following input (borrowed from <a class="reference external" href="https://github.com/PyroId/PyroPython/tree/master/examples/Birch_Cone_Example">Birch_Cone_Example</a>)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">MLR35</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">fname</span><span class="p p-Indicator">:</span> <span class="s">&#39;Experimental_Data/Birch_35kW.csv&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">dep_col_name</span><span class="p p-Indicator">:</span> <span class="s">&#39;MLR&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="l l-Scalar l-Scalar-Plain">filter_type</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">gp</span>
+</pre></div>
+</div>
+<p>Produces the following result: (The image is produced by plot_pyro)</p>
+<div class="figure">
+<img alt="_images/Exp_MLR50.jpg" src="_images/Exp_MLR50.jpg" />
+</div>
 </div>
 
 
@@ -53,13 +92,13 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Template files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting with plot_pyro</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Filtering experimental data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
@@ -67,7 +106,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="plots.html" title="previous chapter">Plotting with plot_pyro</a></li>
+      <li>Previous: <a href="plots.html" title="previous chapter">Plotting</a></li>
       <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
   </ul></li>
 </ul>
